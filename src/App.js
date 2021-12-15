@@ -1,24 +1,41 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import Counter from './components/counter';
+import usersData from './components/users/data';
+import UserContext from './components/context/userContext';
+import UserList from './components/users/user_list';
+
+
 
 function App() {
+
+  const [show, setShow] = useState(true);
+  const [users, setUsers] = useState(usersData);
+  const changeColor = (id, color) =>
+  setUsers(
+    users.map(user => (user.id === id ? { ...user, color: color } : user))
+  );
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>useState and useEffect</h1>
+      <button onClick={() => setShow(!show)}>Toggle Button</button>
+
+      <div>
+        {show && <Counter />}
+      </div>
+
+      <UserContext.Provider value="deyer">
+        <h1>User Context</h1>
+        <UserList usersList={users} changeColor={changeColor} />
+      </UserContext.Provider>
+
     </div>
+
+
+
+
   );
 }
 
